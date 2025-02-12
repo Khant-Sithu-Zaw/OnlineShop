@@ -1,0 +1,35 @@
+<app-not-found [visible]="!cart || cart.items.length<=0" [message]="'Cart Page is Empty'"
+  [resetLinkText]="'Go to Home Page'"></app-not-found>
+<div *ngIf="cart && cart.items.length>0" class="flex flex-wrap items-start w-full pt-5 justify-evenly">
+  <ul class="flex flex-col w-[65%] border rounded-3xl">
+    <li *ngFor="let item of cart.items" class="flex items-center justify-between border-b py-3 text-base px-10">
+      <div class="w-[120px] rounded-full overflow-hidden h-[120px] flex items-center justify-start">
+        <img [src]="item.food.imageUrl" alt="{{item.food.name}}" class="w-full h-full object-cover">
+      </div>
+      <div class="w-[20%] ">
+        <a routerLink="/food/{{item.food.id}}">{{item.food.name}}</a>
+      </div>
+      <div class="w-[20%]">
+        <span>Price : {{item.food.price| currency}}</span>
+      </div>
+      <div>
+        <span>Quantity : </span>
+        <button class="inline-block px-2 py-1 mr-2 border" (click)="updateQty(item,false)">-</button>
+        <span>{{item.quantity}}</span>
+        <button class="inline-block px-2 py-1 ml-2 border" (click)="updateQty(item,true)">+</button>
+      </div>
+      <div>
+        <button (click)="removeItem(item)">Remove From Cart</button>
+      </div>
+    </li>
+  </ul>
+
+  <div class="w-[30%] py-5 pl-5 border rounded-3xl ">
+    <div>
+      <span>Total Price: {{total| currency}}</span>
+    </div>
+    <div>
+      <span>Numbers of Items {{totalQty}}</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+.rate-star{
+  font-size: 20px;
+  color: gray;
+  cursor: pointer;
+}
+.rate-star.filled {
+  color: gold;
+}
+.rate-star.half-filled {
+  background: linear-gradient(to right, gold 50%, gray 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+ 

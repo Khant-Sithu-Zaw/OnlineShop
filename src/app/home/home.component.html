@@ -1,0 +1,30 @@
+<app-search></app-search>
+<app-tag></app-tag>
+<app-not-found [visible]="foods.length<=0" [message]="'Reset Search'"></app-not-found>
+<ul class="flex flex-wrap justify-center items-center text-base">
+    <li *ngFor="let food of foods" class="my-3">
+        <a routerLink="/food/{{food.id}}" class="w-[24rem] m-[1rem] border rounded-md
+        overflow-hidden flex flex-col  hover:opacity-85 hover:cursor-pointer shadow-md min-h-80">
+            <img [src]="food.imageUrl" alt="food image" />
+            <div class="p-4 relative ">
+                <div class="text-red-800">{{food.name}}</div>
+                <span class="{{food.favorite?'text-red-500':'text-gray-400'}} absolute top-4 right-3">❤︎</span>
+                <app-star-rating [rating]="food.stars" class="mb-3"
+                    (ratingChange)="updateRating(food, $event)"></app-star-rating>
+                <div class="flex justify-between">
+                    <div class="flex-9">
+                        <span class="text-sm rounded-sm inline-block" *ngFor="let origin of food.origin">{{origin}}
+                        </span>
+                    </div>
+                    <div>
+                        <span>🕑</span>
+                        <span>{{food.cookTime}}</span>
+                    </div>
+                </div>
+                <div>
+                    <span>{{food.price |currency}}</span>
+                </div>
+            </div>
+        </a>
+    </li>
+</ul>

@@ -1,0 +1,30 @@
+<app-not-found [visible]="!food" [message]="'Food Not Found'" [resetLinkText]="'Back To Home Page'"></app-not-found>
+<div *ngIf="food" class="flex justify-center items-center flex-wrap py-5">
+    <div class="w-[34%] mx-3 rounded-3xl overflow-hidden">
+        <img [src]=" food.imageUrl" alt="food.name" class="w-full">
+    </div>
+    <div class="flex flex-col ml-4 text-black w-[26%]">
+        <div class="text-2xl flex justify-between items-center">
+            <span class="font-bold">{{food.name}}</span>
+            <span class="{{food.favorite?'': 'text-gray-500'}}">❤︎</span>
+        </div>
+        <div>
+            <app-star-rating [rating]="food.stars" [readOnly]="true"></app-star-rating>
+        </div>
+        <div class="flex flex-wrap mb-3">
+            <span *ngFor="let origin of food.origin"
+                class="mr-2 bg-blue-950 px-3 py-1 text-white rounded-2xl">{{origin}}</span>
+        </div>
+        <div>
+            <app-tag [forFoodDetail]="food.tags" justifyContent="start"></app-tag>
+        </div>
+        <div class="my-1 text-[14px]">
+            <span>Duration to cook: <strong>{{food.cookTime}}</strong></span>
+        </div>
+        <div class="text-yellow-600 mb-2">
+            <span>Price : <strong>{{food.price|currency}}</strong></span>
+        </div>
+        <button (click)="addItem()"
+            class="text-white text-center w-full bg-red-600 py-[2px] rounded-3xl border-none hover:opacity-75 cursor-pointer">Add
+            to Cart</button>
+    </div>
