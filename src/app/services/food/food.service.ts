@@ -33,13 +33,13 @@ export class FoodService {
   }
   getAllTags(): Tag[] {
     return [
-      { name: 'All', count: 14 },
-      { name: 'FastFood', count: 14 },
-      { name: 'SlowFood', count: 14 },
-      { name: 'Lunch', count: 14 },
-      { name: 'Dinner', count: 14 },
-      { name: 'BreakFast', count: 14 },
-      { name: 'Fry', count: 14 },
+      { name: 'All', count: 6 },
+      { name: 'FastFood', count: 4 },
+      { name: 'SlowFood', count: 2 },
+      { name: 'Lunch', count: 3 },
+      { name: 'Dinner', count: 2 },
+      { name: 'BreakFast', count: 2 },
+      { name: 'Fry', count: 2 },
     ];
   }
   getFoodById(id: number): Food {

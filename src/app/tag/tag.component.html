@@ -1,12 +1,14 @@
-<div *ngIf="tags" class="flex flex-wrap items-center text-sm" [style.justify-content]="justifyContent">
+<div *ngIf="tags" class="md:flex hidden flex-wrap items-center md:text-sm text-[12px]"
+    [style.justify-content]="justifyContent">
     <a href="" *ngFor="let tag of tags" routerLink="/tag/{{tag.name}}"
-        class="mr-2 p-2 border rounded-2xl hover:bg-gray-200">
+        class="mr-2 p-2 border rounded-2xl hover:bg-gray-200 inline-block  break-words">
         {{tag.name}}({{tag.count}})
     </a>
 </div>
-<div *ngIf="forFoodDetail" class="flex flex-wrap items-center text-sm" [style.justify-content]="justifyContent">
+<div *ngIf="forFoodDetail" class="md:flex hidden flex-wrap items-center text-sm"
+    [style.justify-content]="justifyContent">
     <a href="" *ngFor="let tagname of forFoodDetail" routerLink="/tag/{{tagname}}"
-        class="mr-2 p-2 border rounded-2xl hover:bg-gray-200">
+        class="mr-2 p-2 mb-1 border rounded-2xl hover:bg-gray-200  inline-block">
         {{tagname}}
     </a>
 </div>

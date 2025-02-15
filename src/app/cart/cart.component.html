@@ -1,30 +1,32 @@
 <app-not-found [visible]="!cart || cart.items.length<=0" [message]="'Cart Page is Empty'"
   [resetLinkText]="'Go to Home Page'"></app-not-found>
-<div *ngIf="cart && cart.items.length>0" class="flex flex-wrap items-start w-full pt-5 justify-evenly">
-  <ul class="flex flex-col w-[65%] border rounded-3xl">
-    <li *ngFor="let item of cart.items" class="flex items-center justify-between border-b py-3 text-base px-10">
-      <div class="w-[120px] rounded-full overflow-hidden h-[120px] flex items-center justify-start">
+<div *ngIf="cart && cart.items.length>0"
+  class="flex flex-wrap items-start w-full pt-5 lg:justify-evenly justify-center">
+  <ul class="flex flex-col xl:w-[67%] w-[70%] border rounded-3xl ">
+    <li *ngFor="let item of cart.items"
+      class="flex items-center xl:justify-between  py-3 text-base px-10  flex-wrap justify-start lg:flex-row flex-col">
+      <div class="w-[120px] rounded-full overflow-hidden h-[120px] flex xl:items-center  justify-start ">
         <img [src]="item.food.imageUrl" alt="{{item.food.name}}" class="w-full h-full object-cover">
       </div>
-      <div class="w-[20%] ">
+      <div class="xl:w-[18%] lg:w-[19%] text-center w-full">
         <a routerLink="/food/{{item.food.id}}">{{item.food.name}}</a>
       </div>
-      <div class="w-[20%]">
+      <div class="xl:w-[18%] lg:w-[19%] text-center w-full">
         <span>Price : {{item.food.price| currency}}</span>
       </div>
-      <div>
+      <div class="xl:w-[22%] lg:w-[24%] w-full text-center">
         <span>Quantity : </span>
         <button class="inline-block px-2 py-1 mr-2 border" (click)="updateQty(item,false)">-</button>
         <span>{{item.quantity}}</span>
         <button class="inline-block px-2 py-1 ml-2 border" (click)="updateQty(item,true)">+</button>
       </div>
-      <div>
+      <div class="lg:w-[14%] w-full text-center">
         <button (click)="removeItem(item)">Remove From Cart</button>
       </div>
     </li>
   </ul>
 
-  <div class="w-[30%] py-5 pl-5 border rounded-3xl ">
+  <div class="xl:w-[28%] xl:mt-0  mt-4 py-5 pl-5 border rounded-3xl w-[70%] flex flex-col items-center lg:items-start">
     <div>
       <span>Total Price: {{total| currency}}</span>
     </div>

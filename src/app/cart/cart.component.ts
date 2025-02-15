@@ -54,5 +54,6 @@ export class CartComponent {
     items.forEach(item=>{
       this.totalQty+=item.quantity;
     });
+    
   }
 }
