@@ -36,6 +36,7 @@ export class CartComponent {
     this.total+=item.food.price*item.quantity;
     });
     this.setQty(this.cart.items);
+
   }
 
   updateQty(cartitem: CartItem,flg:boolean) {
@@ -54,6 +55,6 @@ export class CartComponent {
     items.forEach(item=>{
       this.totalQty+=item.quantity;
     });
-    
+    this.cartService.triggerBlink();
   }
 }

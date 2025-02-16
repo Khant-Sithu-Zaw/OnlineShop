@@ -11,7 +11,16 @@ export class CartService {
   private cart: Cart=new Cart;
   private itemCountSource = new BehaviorSubject<number>(0);  
   itemCount$ = this.itemCountSource.asObservable();
+  private blinkingState = new BehaviorSubject<boolean>(false);
+  isBlinking$ = this.blinkingState.asObservable();
+  triggerBlink() {
+    this.blinkingState.next(true);
 
+    // Stop blinking after 3 seconds
+    setTimeout(() => {
+      this.blinkingState.next(false);
+    }, 1000);
+  }
 
   constructor() {
    const serializedArray = localStorage.getItem('myCart');

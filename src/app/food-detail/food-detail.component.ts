@@ -33,6 +33,7 @@ export class FoodDetailComponent {
   }
   addItem(){
     this.cartService.addToCart(this.food);
+    this.cartService.triggerBlink();
     // this.router.navigate(['/cart']);
   }
 }
