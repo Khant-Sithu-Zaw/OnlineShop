@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Food } from '../../shared/models/food';
 import { Tag } from '../../shared/models/tag';
+import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
 export class FoodService {
+  private apiUrl = 'http://127.0.0.1:8000/api/foods';
   private foods: Food[] = [
     { id: 1, name: 'Meatball', cookTime: '10-20', price: 10, favorite: false, origin: ['italy'], stars: 4, imageUrl: '/assets/images/food1.jpg', tags: ['FastFood', 'Lunch', 'Dinner'] },
     { id: 2, name: 'Rice&Chicken', price: 20, cookTime: '20-30', favorite: true, origin: ['persia', 'middle east'], stars: 3.1, imageUrl: '/assets/images/food2.jpg', tags: ['SlowFood', 'Lunch'] },
@@ -13,8 +15,9 @@ export class FoodService {
     { id: 5, name: 'Fried Chicken', price: 11, cookTime: '40-50', favorite: false, origin: ['europe', 'asia'], stars: 2.5, imageUrl: '/assets/images/food5.jpg', tags: ['FastFood', 'Fry', 'Dinner'] },
     { id: 6, name: 'Hamburger', price: 9, cookTime: '40-50', favorite: false, origin: ['us', 'china'], stars: 4.2, imageUrl: '/assets/images/food6.jpg', tags: ['FastFood', 'Lunch', 'BreakFast'] },
   ];
-  constructor() { }
+   constructor(private http: HttpClient) {}
   getAll(): Food[] {
+    console.log(this.http.get<Food[]>(this.apiUrl));
     return this.foods;
   }
   getFoods(searchTerm: string): Food[] {
