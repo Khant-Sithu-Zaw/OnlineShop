@@ -1,0 +1,58 @@
+<div class="flex flex-col items-center justify-center px-6 py-8 mx-auto">
+  <loading-screen [isLoading]="isloading"></loading-screen>
+  <div *ngIf="!isloading"
+    class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+    <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+      <h1 class="text-xl font-bold leading-tight tracking-tight text-red-500">
+        Sign in to your account
+      </h1>
+      <form class="space-y-4 md:space-y-6" [formGroup]="loginForm" (ngSubmit)="signin()" autocomplete="on"
+        (keydown.enter)="signin()">
+        <div>
+          <label for="email" class="block mb-2 text-sm font-medium text-red-500 ">Your email</label>
+          <input placeholder="Email" formControlName="email" type="email" name="email" id="email" autocomplete="email"
+            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            required="">
+
+          <app-input-validation [controls]="fc['email']" [showErrors]="isLogggedIn"></app-input-validation>
+        </div>
+        <div>
+          <label for="password" class="block mb-2 text-sm font-medium text-red-500">Password</label>
+          <div class="relative">
+            <input [type]="showPassword ? 'text' : 'password'" name="password" id="password" placeholder="Password"
+              formControlName="password" autocomplete="current-password"
+              class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+              required="">
+            <button type="button" (click)="togglePasswordVisibility()"
+              class="absolute right-3 top-1/2 -translate-y-1/2">
+              <img *ngIf="!showPassword" src="assets/icons/Sharingan.svg" alt="Show"
+                class="w-6 h-6 transition-transform duration-1000" [ngClass]="{ 'rotate-[360deg]': spinning }" />
+              <img *ngIf="showPassword" src="assets/icons/EMS.svg" alt="Hide" class="w-6 h-6" />
+            </button>
+          </div>
+          <app-input-validation [controls]="fc['password']" [showErrors]="isLogggedIn"></app-input-validation>
+        </div>
+        <div class="flex items-center justify-between hidden">
+          <div class="flex items-start">
+            <div class="flex items-center h-5">
+              <input id="remember_me" aria-describedby="remember" type="checkbox"
+                class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800 hidden"
+                formControlName="remember_me">
+            </div>
+            <div class="ml-3 text-sm">
+              <label for="remember_me" class="text-red-500 hidden">Remember me</label>
+            </div>
+          </div>
+          <a href="#" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500 hidden">Forgot
+            password?</a>
+        </div>
+        <default-button [btnType]="'submit'" [btnText]="'Login'">
+        </default-button>
+        <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+          Don’t have an account yet? <a routerLink="/register"
+            class="font-medium text-red-500 hover:underline dark:text-primary-500">Sign Up</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>

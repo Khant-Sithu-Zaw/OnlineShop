@@ -1,0 +1,76 @@
+<loading-screen [isLoading]="isloading"></loading-screen>
+<div *ngIf="!isloading" class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-[70%]">
+    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Register</h2>
+    <form class="grid grid-cols-1 md:grid-cols-2 gap-6" [formGroup]="registerForm" (ngSubmit)="submit()"
+      autocomplete="on" (keydown.enter)="submit()">
+      <!-- Name -->
+      <div>
+        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+        <input type="text" id="name"
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          placeholder="Enter your name" formControlName="name" />
+        <app-input-validation [controls]="fc['name']" [showErrors]="isSubmit"></app-input-validation>
+      </div>
+      <!-- Email -->
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input type="email" id="email"
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          placeholder="Enter your email" formControlName="email" />
+        <app-input-validation [controls]="fc['email']" [showErrors]="isSubmit"></app-input-validation>
+      </div>
+      <!-- Password -->
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input type="password" id="password"
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          placeholder="Enter your password" formControlName="password" />
+        <app-input-validation [controls]="fc['password']" [showErrors]="isSubmit"></app-input-validation>
+      </div>
+      <!-- Confirm Password -->
+      <div>
+        <div class="relative">
+          <label for="confirmpassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+          <input type="password" id="confirmpassword"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Confirm your password" formControlName="confirmPassword" />
+          <button type="button" class="absolute right-3 top-9" (click)="togglePasswordVisibility()">
+            <img src="assets/icons/Byakugan.svg" alt="Show" class="w-6 h-6" />
+          </button>
+          <app-input-validation [controls]="fc['confirmPassword']" [showErrors]="isSubmit"></app-input-validation>
+        </div>
+      </div>
+      <!-- Phone -->
+      <div>
+        <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+        <input type="tel" id="phone"
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          placeholder="Enter your phone number" formControlName="phone" />
+        <app-input-validation [controls]="fc['phone']" [showErrors]="isSubmit"></app-input-validation>
+      </div>
+      <!-- Profile Picture -->
+      <div>
+        <label for="profile-pic" class="block text-sm font-medium text-gray-700">Profile Picture</label>
+        <input type="file" id="profile-pic" class="mt-1 inline-block w-auto text-sm rounded-lg
+                               file:mr-4 file:py-2 file:px-4
+                               file:rounded-lg file:border-gray-500 file:border-none 
+                               file:text-sm file:font-semibold file:text-gray-700
+                               hover:file:bg-red-600 hover:file:text-white" accept="image/*"
+          (change)="onFileSelected($event)" />
+        <span class="text-sm text-red-700">*Optional</span>
+      </div>
+      <!-- Submit Button -->
+      <div class="col-span-1 md:col-span-2">
+        <default-button [btnType]="'submit'" [btnText]="'Register'" [btnWidth]="'w-[50%]'"
+          class="w-full flex justify-center"></default-button>
+      </div>
+      <div class="col-span-1 md:col-span-2 text-center mt-4">
+        <p class="text-sm text-gray-600">
+          Already a member?
+          <a routerLink="/login" class="text-red-500 hover:underline">Login</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

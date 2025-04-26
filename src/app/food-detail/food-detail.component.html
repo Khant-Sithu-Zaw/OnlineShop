@@ -9,7 +9,7 @@
             <span class="{{food.favorite?'': 'text-gray-500'}}">❤︎</span>
         </div>
         <div>
-            <app-star-rating [rating]="food.stars" [readOnly]="true"></app-star-rating>
+            <app-star-rating [rating]="food.stars" (ratingChange)="food.stars = $event"></app-star-rating>
         </div>
         <div class="flex flex-wrap mb-3">
             <span *ngFor="let origin of food.origin"

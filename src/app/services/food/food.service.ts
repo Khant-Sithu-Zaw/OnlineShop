@@ -2,31 +2,71 @@ import { Injectable } from '@angular/core';
 import { Food } from '../../shared/models/food';
 import { Tag } from '../../shared/models/tag';
 import { HttpClient } from '@angular/common/http';
+import { map, Observable, shareReplay, tap } from 'rxjs';
+import { Target } from '@angular/compiler';
+import { FOODLIST_API, TAGS_API } from '../../shared/constants/constant';
 @Injectable({
   providedIn: 'root'
 })
 export class FoodService {
-  private apiUrl = 'http://127.0.0.1:8000/api/foods';
-  private foods: Food[] = [
-    { id: 1, name: 'Meatball', cookTime: '10-20', price: 10, favorite: false, origin: ['italy'], stars: 4, imageUrl: '/assets/images/food1.jpg', tags: ['FastFood', 'Lunch', 'Dinner'] },
-    { id: 2, name: 'Rice&Chicken', price: 20, cookTime: '20-30', favorite: true, origin: ['persia', 'middle east'], stars: 3.1, imageUrl: '/assets/images/food2.jpg', tags: ['SlowFood', 'Lunch'] },
-    { id: 3, name: 'Coconut Noodles', price: 5, cookTime: '10-15', favorite: false, origin: ['germany', 'malaysia'], stars: 2, imageUrl: '/assets/images/food3.jpg', tags: ['SlowFood', 'BreakFast'] },
-    { id: 4, name: 'Fried Potatoes', price: 2, cookTime: '15-20', favorite: true, origin: ['belgium', 'france'], stars: 3, imageUrl: '/assets/images/food4.jpg', tags: ['FastFood', 'Fry'] },
-    { id: 5, name: 'Fried Chicken', price: 11, cookTime: '40-50', favorite: false, origin: ['europe', 'asia'], stars: 2.5, imageUrl: '/assets/images/food5.jpg', tags: ['FastFood', 'Fry', 'Dinner'] },
-    { id: 6, name: 'Hamburger', price: 9, cookTime: '40-50', favorite: false, origin: ['us', 'china'], stars: 4.2, imageUrl: '/assets/images/food6.jpg', tags: ['FastFood', 'Lunch', 'BreakFast'] },
-  ];
-   constructor(private http: HttpClient) {}
-  getAll(): Food[] {
-    console.log(this.http.get<Food[]>(this.apiUrl));
-    return this.foods;
-  }
-  getFoods(searchTerm: string): Food[] {
-    return this.getAll().filter(food => food.name.toLowerCase().includes(searchTerm.toLowerCase()));
-  }
-  getByTag(tag: string): Food[] {
 
-    return tag.toLocaleLowerCase() === 'all' ? this.getAll() : this.getAll().filter(food => food.tags.some(t => t.toLowerCase() === tag.toLowerCase()));
+  private foods: Food[] = [];
+  private tags: Tag[] = [];
+  constructor(private http: HttpClient) {
 
+  }
+  foodArray$: Observable<Food[]> | undefined;
+  tagArray$: Observable<Tag[]> | undefined;
+  getFromAPI(): Observable<Food[]> {
+    return this.http.get<Food[]>(FOODLIST_API).pipe(
+      map((foods) => foods.map((foodData: any) => this.transformToFoodModel(foodData)))
+    );
+  }
+
+  private transformToFoodModel(foodData: any): Food {
+    const food = new Food();
+
+    food.id = foodData.id;
+    food.name = foodData.name;
+    food.price = parseFloat(foodData.price);
+    food.stars = parseFloat(foodData.stars);
+    food.favorite = foodData.fav === 1; // Assuming 1 means favorite and 0 means not favorite
+    food.imageUrl = foodData.imgUrl;
+    food.cookTime = foodData.cookTime;
+
+    // Transform the tag array to a simple list of strings
+    food.tags = foodData.tag.map((tag: any) => tag.name);
+
+    // Transform the origin array to a simple list of strings
+    food.origin = foodData.origin.map((origin: any) => origin.name);
+
+    return food;
+  }
+
+  getAll(): Observable<Food[]> {
+    if (this.foodArray$) {
+      return this.foodArray$;
+    } else {
+      this.foodArray$ = this.getFromAPI().pipe(
+        shareReplay(1),
+        tap((data) => {
+          this.foods = data;
+          console.log(this.foods); // Data will be printed only when it is 
+        })
+      );
+      return this.foodArray$;
+    }
+  }
+
+  getFoods(searchTerm: string): Observable<Food[]> {
+    return this.getAll().pipe(
+      map(foods => foods.filter(food => food.name.toLowerCase().includes(searchTerm.toLowerCase())))
+    );
+  }
+  getByTag(tag: string): Observable<Food[]> {
+    return this.getAll().pipe(
+      map(foods => tag.toLocaleLowerCase() === 'all' ? foods : foods.filter(food => food.tags.some(t => t.toLowerCase() === tag.toLowerCase())))
+    );
   }
   updateFoodRating(id: number, newRating: number) {
     const food = this.foods.find(f => f.id === id);
@@ -34,18 +74,34 @@ export class FoodService {
       food.stars = newRating;
     }
   }
-  getAllTags(): Tag[] {
-    return [
-      { name: 'All', count: 6 },
-      { name: 'FastFood', count: 4 },
-      { name: 'SlowFood', count: 2 },
-      { name: 'Lunch', count: 3 },
-      { name: 'Dinner', count: 2 },
-      { name: 'BreakFast', count: 2 },
-      { name: 'Fry', count: 2 },
-    ];
+  getAllTags(): Observable<Tag[]> {
+    if (this.tagArray$) {
+      return this.tagArray$;
+    }
+    else {
+      this.tagArray$ = this.http.get<any[]>(TAGS_API).pipe(
+        shareReplay(1),
+        map(response =>
+          response.map(item => ({
+            name: item.tag_name, // Mapping API's name to the model's name
+            count: item.food_count, // Mapping API's food_count to the model's count
+          }))
+        )
+      );
+      return this.tagArray$;
+    }
   }
-  getFoodById(id: number): Food {
-    return this.foods.find(f => f.id === id)!;
+
+  getFoodById(id: number): Observable<Food | undefined> {
+    return this.getAll().pipe(
+      map(foods => foods.find(f => f.id === id)), // Find the food by id
+      tap(food => {
+        if (food) {
+          console.log(food); // Log the found food for debugging
+        } else {
+          console.log('Food not found');
+        }
+      })
+    );
   }
 }

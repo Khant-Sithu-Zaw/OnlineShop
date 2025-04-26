@@ -1,0 +1,40 @@
+<div class="py-8 bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold text-center text-red-500 mb-6">Checkout</h2>
+        <form [formGroup]="checkoutForm" (ngSubmit)="createOrder()" class="space-y-6">
+            <h3 class="text-xl font-semibold text-gray-700 text-center">Complete Your Order</h3>
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                <input id="name" formControlName="name" required
+                    class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                <app-input-validation [controls]="fc['name']" [showErrors]="isOrdered"></app-input-validation>
+            </div>
+            <div>
+                <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+                <input id="address" formControlName="address" required
+                    class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                <app-input-validation [controls]="fc['address']" [showErrors]="isOrdered"></app-input-validation>
+            </div>
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                <input id="phone" formControlName="phone" required
+                    class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                    placeholder="e.g 09********">
+                <app-input-validation [controls]="fc['phone']" [showErrors]="isOrdered"></app-input-validation>
+            </div>
+            <div class="mt-8">
+                <order-itemslist [order]="order" (totalAmount)="getTotalPrice($event)"></order-itemslist>
+            </div>
+            <div class="mt-8">
+                <h4 class="text-lg font-semibold text-gray-700 mb-4">Choose Your Location on Map</h4>
+
+                <app-map [currentOrder]="order" (locationNameChanged)="handleLocationName($event)"></app-map>
+
+            </div>
+            <div class="mt-8 text-center">
+                <default-button [btnText]="'Confirm Order'" [btnType]="'submit'">
+                </default-button>
+            </div>
+        </form>
+    </div>
+</div>

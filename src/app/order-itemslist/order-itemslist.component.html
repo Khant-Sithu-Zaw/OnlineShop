@@ -1,0 +1,40 @@
+<div class="p-6 bg-gray-100 min-h-min">
+    <table class="w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
+        <thead class="bg-red-500 text-white">
+            <tr>
+                <th colspan="5" class="text-left p-4">
+                    <h3 class="text-lg font-bold">Ordered Items</h3>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of order.items" class="border-b hover:bg-gray-50">
+                <td class="p-4">
+                    <a routerLink="/food/{{item.food.id}}" class="flex items-center space-x-2">
+                        <img [src]="item.food.imageUrl" alt="{{item.food.name}}" class="w-16 h-16 object-cover rounded">
+                    </a>
+                </td>
+                <td class="p-4 text-gray-700">
+                    {{item.food.name}}
+                </td>
+                <td class="p-4 text-gray-700">
+                    {{item.food.price | currency}}
+                </td>
+                <td class="p-4 text-gray-700">
+                    {{item.quantity}}
+                </td>
+                <td class="p-4 text-gray-700">
+                    {{item.quantity * item.food.price | currency}}
+                </td>
+            </tr>
+            <tr class="bg-gray-100">
+                <td colspan="4" class="p-4 text-right font-bold text-gray-700">
+                    Total:
+                </td>
+                <td class="p-4 font-bold text-red-500">
+                    {{order.totalPrice | currency}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

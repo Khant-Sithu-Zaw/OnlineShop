@@ -1,0 +1,29 @@
+<div class="p-6 space-y-6 max-w-4xl mx-auto">
+    <h2 class="text-3xl font-bold text-center text-indigo-600">🛒 Your Order History</h2>
+    <loading-screen [isLoading]="isLoading"></loading-screen>
+    <div *ngFor="let order of orderHistory" class="bg-white rounded-2xl shadow-md p-6 border border-gray-200">
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <p class="text-gray-700 font-medium">🗓️ <span class="text-gray-900">{{ order.orderDate | date:'medium'
+                        }}</span></p>
+                <p class="text-sm text-gray-500">Status: <span class="font-semibold text-blue-600">{{ order.status
+                        }}</span></p>
+            </div>
+            <div>
+                <p class="text-xl font-bold text-green-600">Total: ${{ order.totalPrice }}</p>
+            </div>
+        </div>
+
+        <div class="divide-y divide-gray-200">
+            <div *ngFor="let item of order.items" class="py-4 flex justify-between items-center">
+                <div>
+                    <p class="text-lg font-semibold text-gray-800">{{ item.name }}</p>
+                    <p class="text-sm text-gray-500">Quantity: {{ item.quantity }}</p>
+                </div>
+                <div>
+                    <p class="text-md font-bold text-gray-700">$ {{ item.price }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

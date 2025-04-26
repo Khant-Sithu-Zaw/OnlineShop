@@ -15,9 +15,21 @@ export class TagComponent {
   @Input() justifyContent: String = "center";
   foodtages?: String[] = [];
   tags?: Tag[];
+  loading: boolean = true;
   constructor(private foodservice: FoodService) { }
   ngOnInit() {
-    if (!this.forFoodDetail)
-      this.tags = this.foodservice.getAllTags();
+    if (!this.forFoodDetail) {
+
+      this.foodservice.getAllTags().subscribe(
+        (data) => {
+          this.tags = data;
+        },
+        (error) => {
+          console.error('Error fetching tags:', error);
+        }
+      );
+      console.log("Tags " + this.tags);
+    }
+
   }
 }

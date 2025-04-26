@@ -1,7 +1,8 @@
 <app-not-found [visible]="!cart || cart.items.length<=0" [message]="'Cart Page is Empty'"
   [resetLinkText]="'Go to Home Page'"></app-not-found>
 <div *ngIf="cart && cart.items.length>0"
-  class="flex flex-wrap items-start w-full pt-5 lg:justify-evenly justify-center">
+  class="flex flex-wrap items-start w-full pt-5 lg:justify-evenly justify-center select-none focus:outline-none"
+  tabindex="0">
   <ul class="flex flex-col xl:w-[67%] w-[70%] border rounded-3xl ">
     <li *ngFor="let item of cart.items"
       class="flex items-center xl:justify-between  py-3 text-base px-10  flex-wrap justify-start lg:flex-row flex-col">
@@ -26,12 +27,16 @@
     </li>
   </ul>
 
-  <div class="xl:w-[28%] xl:mt-0  mt-4 py-5 pl-5 border rounded-3xl w-[70%] flex flex-col items-center lg:items-start">
-    <div>
+  <div class="xl:w-[28%] xl:mt-0  mt-4 py-5 px-5 border rounded-3xl w-[70%] flex   flex-wrap ">
+    <div class="w-full text-center">
       <span>Total Price: {{total| currency}}</span>
     </div>
-    <div>
+    <div class="w-full text-center">
       <span>Numbers of Items {{totalQty}}</span>
+    </div>
+    <div class="w-full text-center">
+      <default-button [btnText]="'Checkout to proceed'" [btnType]="'button'" (btnClick)="gotoCheckout()">
+      </default-button>
     </div>
   </div>
 </div>

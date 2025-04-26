@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { FoodService } from '../services/food/food.service';
+import { Food } from '../shared/models/food';
 @Component({
   selector: 'app-search',
   imports: [FormsModule],
@@ -9,17 +11,24 @@ import { FormsModule } from '@angular/forms';
 })
 export class SearchComponent {
   searchTerm: string = '';
+  isFocused: boolean = false;
+  @ViewChild('searchInput') searchInput!: ElementRef;
   //constructor is not called again when navigating to the same route with a different parameter.So does ngOnInit().
   constructor(private route: ActivatedRoute, private router: Router) {
     //Even though the component instance is reused, the route parameters can still change. That's why you need to subscribe to this.route.params to detect and react to those changes
     this.route.params.subscribe(params => {
       this.searchTerm = params['searchTerm'];
-      console.log('SearchComponent route params');
     });
     console.log('SearchComponent constructor called');
   }
   ngOnInit() {
     console.log('SearchComponent ngOnInit called');
+  }
+  ngAfterViewInit() {
+    console.log('SearchComponent ngAfterViewInit called');
+    if (this.searchTerm) {
+      this.searchInput.nativeElement.focus();
+    }
   }
 
 
@@ -33,8 +42,8 @@ export class SearchComponent {
   //   However, if you're using route parameters like this.route.params, those parameters will update, and you can react to that change using ngOnChanges or by subscribing to route parameter changes manually.
   search() {
     this.searchTerm = this.searchTerm;
-    if (this.searchTerm) {
 
+    if (this.searchTerm) {
       this.router.navigate(['/search', this.searchTerm]);
     }
     else if (this.searchTerm === '') {
